@@ -85,7 +85,7 @@ mysql -u root -p < insert_test_data.sql
 
 ---
 
-## Setup & Installation
+## Author
 Educational project created by Llewelyn Fernandes
 for the Dynamic Web Applications module in creative computing
 © 2025 – Goldsmiths, University of London
