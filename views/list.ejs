@@ -5,15 +5,20 @@
     <link rel="stylesheet" type="text/css" href="/main.css">
   </head>
   <body>
-    <h1>X<%=shopData.shopName%> - Book List</h1>
-    <h2>here are the books that we sell </h2>
-      <ul>
-        <% for (let i=0; i<availableBooks.length; i++){ %>
+    <h1>X<%=shopData.shopName%> - books</h1>
+    <h2>avaliable books:</h2>
+    <% if (availableBooks.lenght ===0) { %> 
+          <p>No books found matching your criteria.</p>
+      <% } else { %>
+    <ul>
+      <% availableBooks.forEach(book =>{ %>
         <li>
-          <%= availableBooks[i].name %>,
-          £<%= Number(availableBooks[i].price).toFixed(2) %>
+          <%= book.name %>
+           - £<%=Number(book.price).tofixed(2)%>  %>
         </li>
-          <% } %>
+          <% }); %>
       </ul>
+    <% } %>
+    <p><a href="/">back to home</a></p>
   </body>
 </html>
