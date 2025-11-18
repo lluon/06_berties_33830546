@@ -14,7 +14,7 @@
       <% availableBooks.forEach(book =>{ %>
         <li>
           <%= book.name %>
-           - £<%=Number(book.price).tofixed(2)%>  %>
+           - £<%=Number(book.price).toFixed(2)%>
         </li>
           <% }); %>
       </ul>
