@@ -76,6 +76,7 @@ berties_books/<br>
 ### 1. Prerequisites
 - Node.js (v18 or higher)
 - MySQL server running locally
+
 ---
 
 ### 2. Database Setup
