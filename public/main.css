@@ -29,23 +29,94 @@ a:link {
   
   /* mouse over link */
   a:hover {
-    color: white;
+    color: rgb(0, 0, 0);
     text-decoration: none;
-    background-color: orangered;
+    background-color: tomato;
+    Border-radius: 8px;
     padding:5px;
   }
   
   /* selected link */
   a:active {
-    color: blue;
+    color: rgb(255, 255, 255);
     text-decoration: none;
     padding:5px;
   }
 
-  button{
+form {
+  border-radius: 5px;
+  width: 70%;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+
+label {
+  display: block;
+}
+
+input[type=text], select {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+input[type=submit] {
+  width: 100%;
+  background-color: #ed3f0f;
+  color: white;
+  padding: 14px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+input[type=email] {
+   width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+input[type=password] {
+    width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+input[type=number] {
+    width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+button {
+  background-color: #ed3f0f;
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
 
 
 
 
-    
-  }
+
+
+

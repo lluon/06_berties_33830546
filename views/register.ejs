@@ -6,23 +6,24 @@
     <link rel="stylesheet"  type="text/css" href="/main.css" />
   </head>
   <body>
-    <h1>REGISTER </h1>
+    <h1>Register with Us </h1><br><br>
 
-    <form method="POST" action="/registered">
+    <form method="POST" action="/users/register">
+
       <p><label for="username">Username:</label></p>
-      <input type ="text" name="username" required>
+      <input type ="text" name="username" required placeholder="Enter your username">
 
       <p><label for="first">First Name:</label></p>
-      <input type ="text" name="first" required>
+      <input type ="text" name="first" required placeholder="Enter your first name">
 
       <p><label for="last">Last Name:</label></p>
-      <input type ="text" name="last" required>
+      <input type ="text" name="last" required placeholder="Enter your last name">
 
       <p><label for="email">Email:</label></p>
-      <input type ="email" name="email" required>
+      <input type ="email" name="email" required placeholder="Enter your email">
 
       <p><label for="password">Password:</label></p>
-      <input type ="password" name="password" required><br><br>
+      <input type ="password" name="password" required placeholder="Enter your password"><br><br>
 
         <button type="submit">Register</button> 
       </form>
