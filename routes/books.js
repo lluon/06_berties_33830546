@@ -46,7 +46,7 @@ router.get('/search-result', function (req, res, next) {
 
 // handle add book submission
   router.post('/bookadded', function(req, res, next) {
-    let sqlquery = "INSERT INTO Books (name,price) values (?,?)"
+    let sqlquery = "INSERT INTO books (name,price) values (?,?)"
     let newrecord = [req.body.name,req.body.price];
     
     db.query(sqlquery,newrecord, (err,result)=> {
