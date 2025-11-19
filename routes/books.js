@@ -10,10 +10,14 @@ router.get('/search',function(req, res, next){
    //search results (partial match)
 router.get('/search-result', function (req, res, next) {
     let keyword = req.query.keyword || "";
-    let sqlquery = "SELECT * FROM books WHERE name LIKE ?";
-    let searchTerm = '%${keyword}%';
 
-    db.query(sqlquery,['%${keyword}%'], (err,result)=> {
+    if (!keyword.trim()) {
+      return res.render("list.ejs", {availableBooks:[]});
+    }
+
+     let sqlquery = "SELECT * FROM books WHERE name LIKE ?";
+
+    db.query(sqlquery,[`%${keyword}%`], (err,result)=> {
         if (err) return next(err);
         res.render("list.ejs",{availableBooks:result})
     });
