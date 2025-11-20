@@ -44,23 +44,29 @@ A new route `/users/audit` displays the full history in a table.
 ## Project Structure
 
 berties_books/<br>
-├── index.js              # Entry point & app configuration<br>
+├── .env                      # Contains DB password!<br>
+├── index.js                  # Entry point & app configuration<br>
 ├── routes/<br>
-│   ├── main.js           # Home & about routes<br>
-│   ├── users.js          # Registration routes<br>
-│   └── books.js          # All book-related routes<br>
-├── views/                # EJS templates<br>
+│   ├── main.js               # Home & about routes<br>
+│   ├── users.js              # Registration routes<br>
+│   └── books.js              # All book-related routes<br>
+├── views/                    # EJS templates<br>
 │   ├── index.ejs<br>
 │   ├── about.ejs<br>
 │   ├── register.ejs<br>
+│   ├── registered.ejs<br>    # new<br>
 │   ├── search.ejs<br>
-│   ├── list.ejs<br>
+│   ├── search-result.ejs<br> # new<br>
+│   ├── login.ejs<br>         # new<br>
+│   ├── loggedin.ejs<br>      # new<br>
+│   ├── list.ejs<br>          # new<br>
+│   ├── listuser.ejs<br>      # new<br>
 │   ├── addbook.ejs<br>
 │   └── bookadded.ejs<br>
 ├── public/
-│   └── main.css          # Global stylesheet<br>
-├── create_db.sql         # Database + user creation script<br>
-├── insert_test_data.sql  # Sample book data<br>
+│   └── main.css              # Global stylesheet<br>
+├── create_db.sql             # Database + user creation script<br>
+├── insert_test_data.sql      # Sample book data<br>
 ├── package.json<br>
 └── README.md<br>
 
