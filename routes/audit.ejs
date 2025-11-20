@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+<head>
+    <title>Audit Log – <%= shopData.shopName %></title>
+    <link rel="stylesheet" href="/main.css">
+</head>
+<body>
+    <h1>Login Audit Log</h1>
+    <% if (logs.length === 0) { %>
+        <p>No audit entries yet.</p>
+    <% } else { %>
+        <table style="width:100%; border-collapse: collapse;">
+            <thead>
+                <tr style="background:#eee;">
+                    <th style="padding:8px; border:1px solid #ccc;">Time</th>
+                    <th style="padding:8px; border:1px solid #ccc;">Username</th>
+                    <th style="padding:8px; border:1px solid #ccc;">Success</th>
+                    <th style="padding:8px; border:1px solid #ccc;">Detail</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% logs.forEach(log => { %>
+                    <tr>
+                        <td style="padding:8px; border:1px solid #ccc;"><%= new Date(log.created_at).toLocaleString() %></td>
+                        <td style="padding:8px; border:1px solid #ccc;"><%= log.username || '(none)' %></td>
+                        <td style="padding:8px; border:1px solid #ccc;"><%= log.success ? 'Yes' : 'No' %></td>
+                        <td style="padding:8px; border:1px solid #ccc;"><%= log.detail %></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    <% } %>
+    <p><a href="/">Back to home</a></p>
+</body>
+</html>

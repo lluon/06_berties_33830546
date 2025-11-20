@@ -1,63 +1,57 @@
-// routes/books.js
 const express = require("express");
 const router = express.Router();
+const db = require("../db");
 
-// search form
-router.get('/search',function(req, res, next){
-    res.render("search.ejs")
+// Search form
+router.get('/search', (req, res) => {
+    res.render("search.ejs");
 });
 
-   //search results (partial match)
-router.get('/search-result', function (req, res, next) {
-    let keyword = req.query.keyword || "";
+// Search results
+router.get('/search-result', (req, res, next) => {
+    let keyword = req.query.keyword?.trim() || "";
 
-    if (!keyword.trim()) {
-      return res.render("list.ejs", {availableBooks:[]});
-    }
-
-     let sqlquery = "SELECT * FROM books WHERE name LIKE ?";
-
-    db.query(sqlquery,[`%${keyword}%`], (err,result)=> {
+    if (!keyword) return res.render("search-result.ejs", { availableBooks: [] });
+    const sql = "SELECT * FROM books WHERE name LIKE ?";
+    db.query(sql, [`%${keyword}%`], (err, result) => {
         if (err) return next(err);
-        res.render("list.ejs",{availableBooks:result})
+        res.render("search-result.ejs", { availableBooks: result });
     });
 });
- 
-// Full List
-  router.get('/list', function(req, res, next) {
-    db.query("SELECT * FROM books", (err,result)=> {
+
+// Full book list
+router.get('/list', (req, res, next) => {
+    db.query("SELECT * FROM books", (err, result) => {
         if (err) return next(err);
-        res.render("list.ejs",{availableBooks: result});
+        res.render("list.ejs", { availableBooks: result });
     });
-  });
+});
 
 // Bargain books
-  router.get('/bargainbooks', function(req, res, next) {
-    db.query("SELECT * FROM books WHERE price <20", (err,result)=> {
-        if (err) return next(err)
-        res.render("list.ejs",{availableBooks: result}) 
-    });
-  });
-    
-// add book form
-  router.get('/addbook', function(req, res, next) {
-        res.render('addbook.ejs') 
-    })
-
-// handle add book submission
-  router.post('/bookadded', function(req, res, next) {
-    let sqlquery = "INSERT INTO books (name,price) values (?,?)"
-    let newrecord = [req.body.name,req.body.price];
-    
-    db.query(sqlquery,newrecord, (err,result)=> {
+router.get('/bargainbooks', (req, res, next) => {
+    db.query("SELECT * FROM books WHERE price < 20", (err, result) => {
         if (err) return next(err);
-        res.render("bookadded.ejs",{
-            name: req.body.name,
-            price: req.body.price
-            });
-        });
+        res.render("list.ejs", { availableBooks: result });
     });
- 
-  
-// Export the router object 
-module.exports = router
+});
+
+// Add book form
+router.get('/addbook', (req, res) => {
+    res.render('addbook.ejs');
+});
+
+// Add book submit
+router.post('/bookadded', (req, res, next) => {
+    const name = req.body.name?.trim();
+    const price = req.body.price;
+
+    if (!name || !price) return res.send("All fields required.");
+
+    const sql = "INSERT INTO books (name, price) VALUES (?, ?)";
+    db.query(sql, [name, price], (err) => {
+        if (err) return next(err);
+        res.render("bookadded.ejs", { name, price });
+    });
+});
+
+module.exports = router;

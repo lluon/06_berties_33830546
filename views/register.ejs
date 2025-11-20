@@ -1,33 +1,25 @@
 <!doctype html>
-<html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Register for <%=shopData.shopName%></title>
-    <link rel="stylesheet"  type="text/css" href="/main.css" />
-  </head>
-  <body>
-    <h1>Register with Us </h1><br><br>
-
-    <form method="POST" action="/users/register">
-
-      <p><label for="username">Username:</label></p>
-      <input type ="text" name="username" required placeholder="Enter your username">
-
-      <p><label for="first">First Name:</label></p>
-      <input type ="text" name="first" required placeholder="Enter your first name">
-
-      <p><label for="last">Last Name:</label></p>
-      <input type ="text" name="last" required placeholder="Enter your last name">
-
-      <p><label for="email">Email:</label></p>
-      <input type ="email" name="email" required placeholder="Enter your email">
-
-      <p><label for="password">Password:</label></p>
-      <input type ="password" name="password" required placeholder="Enter your password"><br><br>
-
-        <button type="submit">Register</button> 
-      </form>
-
-    <p><a href="/">back to home</a></p>
-  </body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Register to <%= shopData.shopName %></title>
+  <link rel="stylesheet" href="/main.css">
+</head>
+<body class="page-register">
+  <h1>Register with <%= shopData.shopName %></h1>
+  <form method="POST" action="/users/register" class="form-register">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required><br>
+    <label for="first">First Name:</label>
+    <input type="text" id="first" name="first" required><br>
+    <label for="last">Last Name:</label>
+    <input type="text" id="last" name="last" required><br>
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required><br>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required><br><br>
+    <button type="submit">Register</button>
+  </form>
+  <p><a href="/">Back to home</a></p>
+</body>
 </html>

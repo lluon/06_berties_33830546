@@ -29,6 +29,17 @@ Perfect teaching example for the Dynamic Web Development module.
 - Plain CSS (no frameworks)
 
 ---
+### dotenv
+Database credentials are no longer hard-coded. They are stored in a `.env` file and loaded using the `dotenv` package. This prevents accidental exposure if the code is pushed to a public repository.
+
+### Audit Logging
+Every login attempt (successful or failed) and registration attempt is recorded in the `audit_logs` table with:
+- username
+- success (1/0)
+- detail message
+- timestamp
+
+A new route `/users/audit` displays the full history in a table.
 
 ## Project Structure
 

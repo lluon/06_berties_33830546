@@ -1,16 +1,18 @@
 <!doctype html>
 <html>
-  <head>
-    <title>Welcome to <%=shopData.shopName%></title>
-    <link rel="stylesheet"  type="text/css" href="/main.css" />
-  </head>
-  <body>
-    <h1>Welcome to <%=shopData.shopName%></h1>
-    <p><a href="/about">About us</a></p>
-    <p><a href="/books/search">Search for books </a></p>
-    <p><a href="/users/register">register with us </a></p>
-    <p><a href="/books/list">list all books</a></p>
-    <p><a href="/books/addbook">Add a new book </a></p>
-    <p><a href="/books/bargainbooks">bergain offer (under £20)</a></p>
-  </body>
+<head>
+    <title>Welcome to <%= shopData.shopName %></title>
+    <link rel="stylesheet" href="/main.css">
+</head>
+<body>
+<h1>Welcome to <%= shopData.shopName %></h1>
+<p><a href="/about">About us</a></p>
+<p><a href="/books/search">Search for books</a></p>
+<p><a href="/books/list">List all books</a></p>
+<p><a href="/books/addbook">Add a new book</a></p>
+<p><a href="/books/bargainbooks">Bargain offers (under £20)</a></p>
+<p><a href="/users/register">Register</a></p>
+<p><a href="/users/login">login</a></p>
+
+</body>
 </html>
