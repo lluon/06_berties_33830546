@@ -2,24 +2,38 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Register to <%= shopData.shopName %></title>
+  <title>Register — <%= shopData.shopName %></title>
   <link rel="stylesheet" href="/main.css">
 </head>
-<body class="page-register">
-  <h1>Register with <%= shopData.shopName %></h1>
-  <form method="POST" action="/users/register" class="form-register">
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username" required><br>
-    <label for="first">First Name:</label>
-    <input type="text" id="first" name="first" required><br>
-    <label for="last">Last Name:</label>
-    <input type="text" id="last" name="last" required><br>
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" required><br>
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" required><br><br>
+<body>
+
+  <h1>Register</h1>
+
+  <form action="/users/register" method="POST">
+    <label>First name:<br>
+      <input type="text" name="first_name" required>
+    </label><br>
+
+    <label>Last name:<br>
+      <input type="text" name="last_name" required>
+    </label><br>
+
+    <label>Username:<br>
+      <input type="text" name="name" required>
+    </label><br>
+
+    <label>Email:<br>
+      <input type="email" name="email" required>
+    </label><br>
+
+    <label>Password:<br>
+      <input type="password" name="password" required>
+    </label><br>
+
     <button type="submit">Register</button>
   </form>
+
   <p><a href="/">Back to home</a></p>
+
 </body>
 </html>

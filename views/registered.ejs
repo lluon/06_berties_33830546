@@ -2,13 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Registered to <%= shopData.shopName %></title>
+  <title>Registered — <%= shopData.shopName %></title>
   <link rel="stylesheet" href="/main.css">
 </head>
 <body>
-  <h1>Welcome, <%= first %> <%= last %>!</h1>
-  <p>You are now registered with email: <strong><%= email %></strong></p>
-  <p><a href="/users/login">Login here</a></p>
-  <p><a href="/">Back to home</a></p>
+
+  <h1>Registration Complete</h1>
+
+  <p>Hello <%= first %> <%= last %>, you are now registered.</p>
+  <p>We will send an email to: <strong><%= email %></strong></p>
+
+  <p><a href="/users/login">Go to login</a></p>
+
 </body>
 </html>
