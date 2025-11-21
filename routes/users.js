@@ -77,13 +77,14 @@ module.exports = (db) => {
     });
 
     // List all users (no passwords)
-    router.get('/list', (req, res, next) => {
-        const sql = "SELECT name, first_name, last_name, email FROM users";
-        db.query(sql, (err, results) => {
-            if (err) return next(err);
-            res.render('listusers', { users: results });
-        });
+// List all users
+router.get('/list', (req, res, next) => {
+    const sql = "SELECT name, first_name, last_name, email FROM users";
+    db.query(sql, (err, results) => {
+        if (err) return next(err);
+        res.render('listusers', { users: results });
     });
+});
 
     // Audit log page
     router.get('/audit', (req, res, next) => {
