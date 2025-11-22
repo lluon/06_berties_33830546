@@ -26,7 +26,9 @@ Perfect teaching example for the Dynamic Web Development module.
 - **Express.js** – web framework
 - **EJS** – embedded JavaScript templating
 - **MySQL** (via `mysql2` driver with connection pool)
-- Plain CSS (no frameworks)
+- **bcrypt**
+- **dotenv**
+- Custom CSS
 
 ---
 ### dotenv
@@ -44,29 +46,32 @@ A new route `/users/audit` displays the full history in a table.
 ## Project Structure
 
 berties_books/<br>
-├── .env                      # Contains DB password!<br>
-├── index.js                  # Entry point & app configuration<br>
+├── .env                     # Contains DB credentials (ignored in Git)<br>
+├── index.js                 # Application entry point<br>
+├── server.js                # Optional alt entry point if used<br>
+├── db.js                    # Database connection (dotenv-enabled)<br>
 ├── routes/<br>
-│   ├── main.js               # Home & about routes<br>
-│   ├── users.js              # Registration routes<br>
-│   └── books.js              # All book-related routes<br>
-├── views/                    # EJS templates<br>
+│   ├── main.js              # Home & About pages<br>
+│   ├── users.js             # Registration, login, audit logging<br>
+│   └── books.js             # Book listing, search, add book<br>
+├── views/<br>
 │   ├── index.ejs<br>
 │   ├── about.ejs<br>
 │   ├── register.ejs<br>
-│   ├── registered.ejs<br>    # new<br>
+│   ├── registered.ejs       # Registration output (assignment requirement)<br>
+│   ├── login.ejs<br>
+│   ├── loggedin.ejs<br>
+│   ├── list.ejs             # All books<br>
+│   ├── listuser.ejs         # List of registered users (no passwords)<br>
+│   ├── audit.ejs            # New — audit log table<br>
 │   ├── search.ejs<br>
-│   ├── search-result.ejs<br> # new<br>
-│   ├── login.ejs<br>         # new<br>
-│   ├── loggedin.ejs<br>      # new<br>
-│   ├── list.ejs<br>          # new<br>
-│   ├── listuser.ejs<br>      # new<br>
+│   ├── search-result.ejs<br>
 │   ├── addbook.ejs<br>
 │   └── bookadded.ejs<br>
-├── public/
-│   └── main.css              # Global stylesheet<br>
-├── create_db.sql             # Database + user creation script<br>
-├── insert_test_data.sql      # Sample book data<br>
+├── public/<br>
+│   └── main.css             # Global stylesheet<br>
+├── create_db.sql            # Database + tables + user creation<br>
+├── insert_test_data.sql     # Sample book data<br>
 ├── package.json<br>
 └── README.md<br>
 
@@ -78,8 +83,10 @@ berties_books/<br>
 | `/`                          | Home page                                |
 | `/about`                     | About the shop                           |
 | `/users/register`            | User registration form                   |
-| `/registered` (POST)         | Registration success page                |
-| `/books/list`                | List all books                           |
+| `/users/login                | Login form                               |
+| `/users/audit`               | Audit log history                        |
+| `/users/list`                | List registered users                    |
+| `/book/list`                 | All books                                |
 | `/books/bargainbooks`        | Books priced under £20 (bargain offers)  |
 | `/books/search`              | Search form                              |
 | `/books/search-result` (GET) | Search results (partial keyword match)   |
@@ -96,10 +103,17 @@ berties_books/<br>
 
 ---
 
-### 2. Database Setup
+### 2. Installation
 
+npm install
 mysql -u root -p < create_db.sql
 mysql -u root -p < insert_test_data.sql
+
+### 3. create .env file
+DB_HOST=localhost
+DB_USER=berties_books_app
+DB_PASSWORD=qwertyuiop
+DB_NAME=berties_books
 
 ---
 
