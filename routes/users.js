@@ -1,3 +1,4 @@
+// routes/users.js
 module.exports = (db) => {
     const express = require('express');
     const router = express.Router();
@@ -17,7 +18,8 @@ module.exports = (db) => {
 
     // Register POST
     router.post('/register', (req, res, next) => {
-        const { username, first, last, email, password } = req.body;
+        const { name: username, first_name: first, last_name: last, email, password } = req.body;
+
         if (!username || !first || !last || !email || !password) {
             return res.send("All fields are required.");
         }
@@ -27,11 +29,13 @@ module.exports = (db) => {
 
             const sql = `INSERT INTO users (name, first_name, last_name, email, hashedPassword)
                          VALUES (?, ?, ?, ?, ?)`;
+
             db.query(sql, [username, first, last, email, hashedPassword], (err) => {
                 if (err) {
                     logAudit(username, 0, "Registration failed (duplicate?)");
                     return res.send("Error registering user – probably username already exists.");
                 }
+
                 logAudit(username, 1, "Successful registration");
                 res.render('registered', { first, last, email });
             });
@@ -40,7 +44,7 @@ module.exports = (db) => {
 
     // Login GET
     router.get('/login', (req, res) => {
-        res.render('login');
+        res.render('login', { error: null });
     });
 
     // Login POST
@@ -77,14 +81,13 @@ module.exports = (db) => {
     });
 
     // List all users (no passwords)
-// List all users
-router.get('/list', (req, res, next) => {
-    const sql = "SELECT name, first_name, last_name, email FROM users";
-    db.query(sql, (err, results) => {
-        if (err) return next(err);
-        res.render('listusers', { users: results });
+    router.get('/list', (req, res, next) => {
+        const sql = "SELECT name, first_name, last_name, email FROM users";
+        db.query(sql, (err, results) => {
+            if (err) return next(err);
+            res.render('listusers', { users: results });
+        });
     });
-});
 
     // Audit log page
     router.get('/audit', (req, res, next) => {
