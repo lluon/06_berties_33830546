@@ -33,7 +33,7 @@ module.exports = (db) => {
             db.query(sql, [username, first, last, email, hashedPassword], (err) => {
                 if (err) {
                     logAudit(username, 0, "Registration failed (duplicate?)");
-                    return res.send("Error registering user – probably username already exists.");
+                    return res.send("Error registering user, probably username already exists.");
                 }
 
                 logAudit(username, 1, "Successful registration");

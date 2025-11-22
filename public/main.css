@@ -70,6 +70,29 @@ button {
   font-size: 1rem;
 }
 
+/* Tables */
+
+li,tr,
+  td {
+    padding: 8px;
+  }
+tr:nth-child(even) {
+  background-color: #ded4d4;
+}
+li:nth-child(even) {
+  background-color: #ded4d4;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  text-align: left;
+  padding: 8px;
+}
+
 input:focus,
 button:focus {
   outline: none;
