@@ -28,8 +28,8 @@ module.exports = (db) => {
   router.post('/registered',
     [
       check('email').isEmail().withMessage('Email must be valid'),
-      check('username').isLength({ min: 5, max: 20 }).withMessage('Username must be between 5 and 20 characters'),
-      check('password').isLength({ min: 8 }).withMessage('Password must be at least 8 characters'),
+      check('username').isLength({ min: 3, max: 20 }).withMessage('Username must be between 5 and 20 characters'),
+      check('password').isLength({ min: 6 }).withMessage('Password must be at least 8 characters'),
       check('first_name').notEmpty().withMessage('First name required'),
       check('last_name').notEmpty().withMessage('Last name required')
     ],
