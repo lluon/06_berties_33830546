@@ -26,7 +26,12 @@ module.exports = (db) => {
         db.query(sql, [username || null, success, detail]);
     };
 
-    // Register GET
+    // __________________________
+    //   register routes
+    // __________________________
+
+
+    //  GET register form
     //______________________________________________
     router.get('/register', (req, res) => {
         res.render('register');
@@ -37,48 +42,77 @@ module.exports = (db) => {
 
     router.post('/registered', 
                 [
-                    check('email').isEmail(), // validate email format
-                    check('username').isLength({ min: 5, max: 20}) // validate username lenght
+                    check('email').isEmail().withMessage('email must be valid'), // validate email format
+                    check('username')
+                    .isLength({ min: 5, max: 20}) // validate username lenght
+                    .withMessage('username must be between 5 and 20 characters'),
+                    // task 3 (4)
+                    check('password')
+                    .isLength({ min: 8 }) 
+                    .withMessage('password must be at least 8 characters'),
+                    // task 3 (5) extra validations
+                    check('firstname')
+                    .notEmpty()
+                    .withMessage('first name cannot be empty'),
+
+                    check('lastname')
+                    .notEmpty()
+                    .withMessage('last name cannot be empty'),
                 ], 
                     function (req, res, next) {
-        const errors = validationResult(req);
 
-        if (!errors.isEmpty()) {
-            // if validation fail, re-render the register page
-            return res.render('register')
-        } else { 
-            // validation passed
-            const{name:username,first_name:first,last_name:last,email,password} = req.body;
+                        //collect validation result
+                        const errors = validationResult(req);
 
-        bcrypt.hash(password, saltRounds, (err, hashedPassword) => {
-            if (err) return next(err);
+                    if (!errors.isEmpty()) {
 
-            const sql = `INSERT INTO users (name, first_name, last_name, email, hashedPassword)
-                         VALUES (?, ?, ?, ?, ?)`;
+                        // if validation fail, re-render the register page
+                        res.render('register');
+                    } 
+                    
+                    else { 
+                    // validation passed
+                    //_______________________________________
+                    const {firstname:first,lastname:last,username:name,email,password}=req.body;
+                        
+               
+                    // Hash password before saving
+                    //_______________________________________
+                    bcrypt.hash(password, saltRounds, (err, hashedPassword) => {
+                        if (err) return next(err);
 
-            db.query(sql, [username, first, last, email, hashedPassword], (err) => {
-                if (err) {
-                    logAudit(username, 0, "Registration failed (duplicate?)");
-                    return res.send("Error registering user, probably username already exists.");
+                    // save user to database
+                    //_______________________________________
+                        const sql = `INSERT INTO users (name, first_name, last_name, email, hashedPassword)
+                                    VALUES (?, ?, ?, ?, ?)`;
+
+                        db.query(sql, [username, first, last, email, hashedPassword], (err) => {
+                            if (err) {
+                                logAudit(username, 0, "Registration failed (duplicate?)");
+                                return res.send("Error registering user, probably username already exists.");
+                            }
+
+                            logAudit(username, 1, "Successful registration");
+                            res.render('registered', { first, last, email });
+                            });
+                        });
+                    }
                 }
 
-                logAudit(username, 1, "Successful registration");
-                res.render('registered', { first, last, email });
-                });
-            });
-        }
-    }
+            );
 
-);
+//_____________________________
+//Login routes
+//_____________________________
 
 
-    // Login GET
+    // GET login form
     //_______________________________________
     router.get('/login', (req, res) => {
         res.render('login', { error: null });
     });
 
-    // Login POST
+    // POST Login
     //________________________________________
     router.post('/login', (req, res, next) => {
         const { username, password } = req.body;
@@ -117,6 +151,11 @@ module.exports = (db) => {
             });
         });
     });
+
+//_____________________________
+//protected pages
+//____________________________
+
 
     // List all users (protected)
     //______________________________________________________
