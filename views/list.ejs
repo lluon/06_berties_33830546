@@ -1,24 +1,24 @@
 <!doctype html>
 <html>
 <head>
-    <title><%= shopData.shopName %> - Book List</title>
-    <link rel="stylesheet" type="text/css" href="/main.css" />
+  <meta charset="utf-8">
+  <title><%= shopData.shopName %> - Book List</title>
+  <link rel="stylesheet" href="/main.css">
 </head>
-<body class="page-booklist">
+<body>
+  <h1><%= shopData.shopName %> - Books</h1>
+  <h2>Available Books:</h2>
 
-    <h1><%= shopData.shopName %> - Books</h1>
-    <h2>Available Books:</h2>
+  <% if (!availableBooks || availableBooks.length === 0) { %>
+    <p>No books found.</p>
+  <% } else { %>
+    <ul>
+      <% availableBooks.forEach(book => { %>
+        <li><%= book.name %> — £<%= Number(book.price).toFixed(2) %></li>
+      <% }) %>
+    </ul>
+  <% } %>
 
-    <% if (availableBooks.length === 0) { %>
-        <p>No books found.</p>
-    <% } else { %>
-        <ul class="book-list">
-            <% availableBooks.forEach(book => { %>
-                <li><%= book.name %> — £<%= Number(book.price).toFixed(2) %></li>
-            <% }) %>
-        </ul>
-    <% } %>
-
-<br><p><a href="/">Back to home</a></p>
+  <p><a href="/">Back to home</a></p>
 </body>
 </html>

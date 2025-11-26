@@ -1,19 +1,18 @@
 <!doctype html>
 <html>
 <head>
-    <title>Book Added — <%= shopData.shopName %></title>
-    <link rel="stylesheet" type="text/css" href="/main.css" />
+  <meta charset="utf-8">
+  <title>Book Added — <%= shopData.shopName %></title>
+  <link rel="stylesheet" href="/main.css">
 </head>
-<body class="page-book-added">
+<body>
+  <h1>Book Successfully Added to <%= shopData.shopName %></h1>
 
-    <h1>Book Successfully Added to <%= shopData.shopName %></h1>
+  <p>This book has been added to the database:</p>
+  <p><strong>Name:</strong> <%= name %></p>
+  <p><strong>Price:</strong> £<%= Number(price).toFixed(2) %></p>
 
-    <p>This book has been added to the database:</p>
-
-    <p><strong>Name:</strong> <%= name %></p>
-    <p><strong>Price:</strong> £<%= Number(price).toFixed(2) %></p>
-
-    <p><a href="/books/list">Back to Book List</a></p>
-<br><p><a href="/">Back to home</a></p>
+  <p><a href="/books/list">Back to Book List</a></p>
+  <p><a href="/">Back to home</a></p>
 </body>
 </html>

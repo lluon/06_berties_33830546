@@ -1,13 +1,20 @@
 <!doctype html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <title>Register — <%= shopData.shopName %></title>
   <link rel="stylesheet" href="/main.css">
 </head>
 <body>
-
   <h1>Register</h1>
+
+  <% if (errors && errors.length) { %>
+    <ul style="color:red;">
+      <% errors.forEach(err => { %>
+        <li><%= err.msg %></li>
+      <% }) %>
+    </ul>
+  <% } %>
 
   <form action="/users/registered" method="POST">
     <label>First name:
@@ -19,7 +26,7 @@
     </label>
 
     <label>Username:
-      <input type="text" name="name" required>
+      <input type="text" name="username" required>
     </label>
 
     <label>Email:
@@ -32,3 +39,7 @@
 
     <button type="submit">Register</button>
   </form>
+
+  <p><a href="/">Back to home</a></p>
+</body>
+</html>

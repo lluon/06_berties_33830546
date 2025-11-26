@@ -1,12 +1,11 @@
 <!doctype html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <title>Audit Log — <%= shopData.shopName %></title>
   <link rel="stylesheet" href="/main.css">
 </head>
 <body>
-
   <h1>Audit Log</h1>
 
   <table>
@@ -19,7 +18,7 @@
 
     <% logs.forEach(log => { %>
       <tr>
-        <td><%= log.timestamp %></td>
+        <td><%= log.created_at %></td>
         <td><%= log.username %></td>
         <td><%= log.success ? "Success" : "Failure" %></td>
         <td><%= log.detail %></td>
@@ -27,7 +26,6 @@
     <% }) %>
   </table>
 
-<br><p><a href="/">Back to home</a></p>
-
+  <p><a href="/">Back to home</a></p>
 </body>
 </html>

@@ -1,72 +1,44 @@
-const express = require('express');
-const session = require('express-session');
-const bodyParser = require('body-parser');
-const expressSanitizer = require('express-sanitizer');   // STEP 11
-
-const path = require('path');
 require('dotenv').config();
+
+const express = require('express');
+const path = require('path');
+const session = require('express-session');
+const expressSanitizer = require('express-sanitizer');
 
 const db = require('./db');
 
-//routes
-//________________________________________
-
 const mainRoutes = require('./routes/main');
-const usersRoutes = require('./routes/users')(db);  // pass db
-const booksRoutes = require('./routes/books');
-
-//express app
-//________________________________________
+const usersRoutes = require('./routes/users')(db);
+const booksRoutes = require('./routes/books')(db);
 
 const app = express();
 const port = process.env.PORT || 8000;
 
-//________________________________
-// view engine and static files
-//________________________________
-
-
+// View engine
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
+// Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(expressSanitizer());
 
-
-// step 11 Sanitizer middleware
-//_________________________________
-app.use(expressSanitizer()); //task (6)
-
-// Session (from 8a) middleware
-//_______________________________________
 app.use(session({
-    secret: 'somerandomstuff',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        expires: 600000
-    }
-}))
+  secret: 'somerandomstuff',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { maxAge: 600000 } // 10 minutes
+}));
 
-// Sanitizer middleware
-//_______________________________________
-const expressSanitizer = require('express-sanitizer');
-app.use(expressSanitizer())
-
-
-
-//local variables
-//_______________________________________
+// Global template data
 app.locals.shopData = { shopName: "Bertie's Books" };
 
-// routes
-//_______________________________________
+// Routes
 app.use('/', mainRoutes);
 app.use('/users', usersRoutes);
 app.use('/books', booksRoutes);
 
-// Start server
-//_______________________________________
-
+// Start
 app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
+  console.log(`Server running at http://localhost:${port}`);
 });
-
