@@ -8,12 +8,26 @@ const mainRoutes = require('./routes/main');
 const usersRoutes = require('./routes/users')(db);  // pass db
 const booksRoutes = require('./routes/books');
 
+var session = require ('express-session')
+
 const app = express();
 const port = process.env.PORT || 8000;
 
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Session (from 8a)
+//_______________________________________
+app.use(session({
+    secret: 'somerandomstuff',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        expires: 600000
+    }
+}))
+//_______________________________________
 
 app.locals.shopData = { shopName: "Bertie's Books" };
 

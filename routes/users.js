@@ -1,22 +1,36 @@
-// routes/users.js
+
 module.exports = (db) => {
     const express = require('express');
     const router = express.Router();
     const bcrypt = require('bcrypt');
     const saltRounds = 10;
 
-    // Helper to log audit
+
+    // login helper to restric access to log in users
+    //________________________________________________
+    const redirectLogin = (req, res, next) => {
+        if (!req.session.userId) {
+        res.redirect('./login') // redirect to the login page
+        } else { 
+            next (); // move to the next middleware function
+        } 
+    };
+
+    // Helper to log audit events
+    //___________________________________________
     const logAudit = (username, success, detail) => {
         const sql = `INSERT INTO audit_logs (username, success, detail) VALUES (?, ?, ?)`;
         db.query(sql, [username || null, success, detail]);
     };
 
     // Register GET
+    //______________________________________________
     router.get('/register', (req, res) => {
         res.render('register');
     });
 
     // Register POST
+    //______________________________________________
     router.post('/register', (req, res, next) => {
         const { name: username, first_name: first, last_name: last, email, password } = req.body;
 
@@ -43,13 +57,16 @@ module.exports = (db) => {
     });
 
     // Login GET
+    //_______________________________________
     router.get('/login', (req, res) => {
         res.render('login', { error: null });
     });
 
     // Login POST
+    //________________________________________
     router.post('/login', (req, res, next) => {
         const { username, password } = req.body;
+
         if (!username || !password) {
             logAudit(username, 0, "Missing credentials");
             return res.send("All fields are required.");
@@ -70,6 +87,11 @@ module.exports = (db) => {
                 if (err) return next(err);
 
                 if (match) {
+
+                    // save  user session 
+                    //_________________________________
+                    req.session.userId = username;
+
                     logAudit(username, 1, "Successful login");
                     res.render('loggedin', { first_name, last_name, email });
                 } else {
@@ -80,8 +102,10 @@ module.exports = (db) => {
         });
     });
 
-    // List all users (no passwords)
-    router.get('/list', (req, res, next) => {
+    // List all users (protected)
+    //______________________________________________________
+
+    router.get('/list', redirectLogin, (req, res, next) => {
         const sql = "SELECT name, first_name, last_name, email FROM users";
         db.query(sql, (err, results) => {
             if (err) return next(err);
@@ -89,8 +113,9 @@ module.exports = (db) => {
         });
     });
 
-    // Audit log page
-    router.get('/audit', (req, res, next) => {
+    // Audit log page (protected)
+    //______________________________________________________
+    router.get('/audit', redirectLogin, (req, res, next) => {
         const sql = "SELECT * FROM audit_logs ORDER BY created_at DESC";
         db.query(sql, (err, logs) => {
             if (err) return next(err);
