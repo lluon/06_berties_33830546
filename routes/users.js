@@ -1,19 +1,22 @@
+const express = require('express');
+const router = express.Router();
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+
+    // task 2 (2)
+    const { check, validationResult } = require('express-validator');
+
 
 module.exports = (db) => {
-    const express = require('express');
-    const router = express.Router();
-    const bcrypt = require('bcrypt');
-    const saltRounds = 10;
 
-
-    // login helper to restric access to log in users
-    //________________________________________________
+    // Login helper to restrict access to logged-in users
+    //_____________________________________________________
     const redirectLogin = (req, res, next) => {
         if (!req.session.userId) {
-        res.redirect('./login') // redirect to the login page
-        } else { 
-            next (); // move to the next middleware function
-        } 
+            res.redirect('./login'); // redirect to login page
+        } else {
+            next(); // move to next middleware
+        }
     };
 
     // Helper to log audit events
@@ -29,14 +32,23 @@ module.exports = (db) => {
         res.render('register');
     });
 
-    // Register POST
+    // Register POST (wwith express-validator)
     //______________________________________________
-    router.post('/register', (req, res, next) => {
-        const { name: username, first_name: first, last_name: last, email, password } = req.body;
 
-        if (!username || !first || !last || !email || !password) {
-            return res.send("All fields are required.");
-        }
+    router.post('/registered', 
+                [
+                    check('email').isEmail(), // validate email format
+                    check('username').isLength({ min: 5, max: 20}) // validate username lenght
+                ], 
+                    function (req, res, next) {
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            // if validation fail, re-render the register page
+            return res.render('register')
+        } else { 
+            // validation passed
+            const{name:username,first_name:first,last_name:last,email,password} = req.body;
 
         bcrypt.hash(password, saltRounds, (err, hashedPassword) => {
             if (err) return next(err);
@@ -52,9 +64,13 @@ module.exports = (db) => {
 
                 logAudit(username, 1, "Successful registration");
                 res.render('registered', { first, last, email });
+                });
             });
-        });
-    });
+        }
+    }
+
+);
+
 
     // Login GET
     //_______________________________________
