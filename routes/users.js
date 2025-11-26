@@ -75,7 +75,7 @@ module.exports = (db) => {
             return res.render('register', { errors: errors.array() });
         } else { 
 
-        // sanitization step (6)
+        // sanitization step (6) xss protection
         //_______________________________________
 
         const first = req.sanitize(req.body.firstname);
@@ -127,7 +127,7 @@ module.exports = (db) => {
         '/login',
         [
             check('username').notEmpty().withMessage('Username is required'),
-            check('password').notEmpty().withMessage('Password is required')
+            check('password').notEmpty().withMessage('Password is required'),
         ], 
         (req, res, next) => {
             const errors = validationResult(req);
