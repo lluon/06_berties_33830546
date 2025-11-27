@@ -38,7 +38,26 @@ app.use('/', mainRoutes);
 app.use('/users', usersRoutes);
 app.use('/books', booksRoutes);
 
-// Start
+// 404 catch-all
+app.use((req, res, next) => {
+  res.status(404).send(`
+    <h1>404 Not Found</h1>
+    <p>The requested URL ${req.originalUrl} was not found on this server.</p>
+    <p><a href="/">Back to home</a></p>
+  `);
+});
+
+// Error handler (optional)
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send(`
+    <h1>500 Internal Server Error</h1>
+    <p>${err.message}</p>
+    <p><a href="/">Back to home</a></p>
+  `);
+});
+
+// Start server
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
