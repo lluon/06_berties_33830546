@@ -1,82 +1,124 @@
-# Bertie's Books
+# Bertie's Books  
+### The Ultimate Full-Stack Bookstore Web Application  
+**Node.js • Express • EJS • MySQL • bcrypt • Session Auth • Audit Logging • Responsive Design**
 
-A simple, fully functional online bookstore web application built with **Node.js**, **Express**, **EJS** templates, and **MySQL**.  
-Perfect teaching example for the Dynamic Web Development module.
+<img src="https://img.shields.io/badge/Node.js-v20.18.0-success?style=for-the-badge&logo=node.js" alt="Node.js">
+<img src="https://img.shields.io/badge/Express-4.21-blue?style=for-the-badge&logo=express" alt="Express">
+<img src="https://img.shields.io/badge/MySQL-8.0%2B-orange?style=for-the-badge&logo=mysql" alt="MySQL">
+<img src="https://img.shields.io/badge/EJS-Templating-yellow?style=for-the-badge" alt="EJS">
+<img src="https://img.shields.io/badge/bcrypt-Password%20Hashing-purple?style=for-the-badge" alt="bcrypt">
+<img src="https://img.shields.io/badge/License-MIT-brightgreen?style=for-the-badge" alt="License">
+
+> **Live Demo (Goldsmiths Students)** → https://doc.gold.ac.uk/usr/388/  
+> **Last Updated**: 26 November 2025
 
 ---
 
-## Features
+## Table of Contents
+- [Project Overview](#project-overview)
+- [Key Features](#key-features)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [Screenshots](#screenshots)
+- [Setup & Installation](#setup--installation)
+- [Database Schema](#database-schema)
+- [Security Features](#security-features)
+- [Audit Logging System](#audit-logging-system)
+- [All Routes (Complete List)](#all-routes-complete-list)
+- [Test Users](#test-users)
+- [Future Enhancements](#future-enhancements)
+- [Author & Credits](#author--credits)
+- [License](#license)
 
-- Home, About, and Registration pages
-- Full book catalogue with:
-  - List all books
-  - Search books by keyword (partial match)
-  - Filter bargain books (under £20)
-  - Add new books to the database (admin-style feature)
-- Clean, responsive styling with custom CSS
-- MySQL backend with connection pooling
-- EJS templating for dynamic content
-- Form handling and user feedback pages
+---
+
+## Project Overview
+
+**Bertie's Books** is a fully functional, secure, and beautifully styled online bookstore built from scratch as a teaching exemplar for **Dynamic Web Development** and **Full-Stack JavaScript** modules.
+
+It demonstrates **real-world best practices** including:
+- User authentication with password hashing
+- Session management
+- Input validation & sanitization
+- SQL injection prevention
+- Audit logging
+- Protected routes
+- Responsive front-end design
+
+---
+
+## Key Features
+
+| Feature                          | Status | Description                                      |
+|----------------------------------|--------|--------------------------------------------------|
+| Home & About pages               | Done   | Branded landing pages                            |
+| Full Book Catalogue              | Done   | List, search, filter under £20                   |
+| Secure User Registration         | Done   | bcrypt + validation + sanitization               |
+| Login / Logout (Session-based)   | Done   | Persistent login with 10-minute cookies          |
+| Protected Admin Routes           | Done   | `/users/list`, `/users/audit`, `/books/addbook`  |
+| Add New Books                    | Done   | Authenticated users only                         |
+| Search Engine (Partial Match)    | Done   | `LIKE '%keyword%'` with sanitization             |
+| Bargain Books Filter             | Done   | All books < £20                                  |
+| Audit Logging System             | Done   | Every login/registration attempt logged          |
+| Responsive CSS Design            | Done   | Mobile-first, clean orange theme                 |
+| Form Validation & Error Handling | Done   | `express-validator` + user-friendly messages     |
+| MySQL Connection Pooling         | Done   | Efficient database handling                      |
 
 ---
 
 ## Tech Stack
 
-- **Node.js** (v18+ recommended)
-- **Express.js** – web framework
-- **EJS** – embedded JavaScript templating
-- **MySQL** (via `mysql2` driver with connection pool)
-- **bcrypt**
-- **dotenv**
-- Custom CSS
+| Layer             | Technology                          |
+|-------------------|-------------------------------------|
+| Runtime           | Node.js (v20+)                      |
+| Framework         | Express.js                          |
+| Templating        | EJS (Embedded JavaScript)           |
+| Database          | MySQL 8.0+ (via `mysql2` with pool) |
+| Password Hashing  | bcrypt (10 salt rounds)             |
+| Session Management| express-session                     |
+| Input Sanitization| express-sanitizer                   |
+| Validation        | express-validator                   |
+| Environment       | dotenv                              |
+| Styling           | Custom CSS (mobile-responsive)      |
 
 ---
-### dotenv
-Database credentials are no longer hard-coded. They are stored in a `.env` file and loaded using the `dotenv` package. This prevents accidental exposure if the code is pushed to a public repository.
 
-### Audit Logging
-Every login attempt (successful or failed) and registration attempt is recorded in the `audit_logs` table with:
-- username
-- success (1/0)
-- detail message
-- timestamp
-
-A new route `/users/audit` displays the full history in a table.
 
 ## Project Structure
 
 berties_books/<br>
 ├── .env                     # Contains DB credentials (ignored in Git)<br>
-├── index.js                 # Application entry point<br>
-├── server.js                # Optional alt entry point if used<br>
+├── index.js                 # main server entry point<br>
 ├── db.js                    # Database connection (dotenv-enabled)<br>
+├── package.json<br>
+├── package-lock.json<br>
+├── public/<br>
+│   └── main.css             # Global stylesheet<br>
 ├── routes/<br>
-│   ├── main.js              # Home & About pages<br>
-│   ├── users.js             # Registration, login, audit logging<br>
-│   └── books.js             # Book listing, search, add book<br>
+│   ├── main.js              # Home, About <br>
+│   ├── users.js             # Auth + audit + user list<br>
+│   └── books.js             # Catalogue, search, add book<br>
 ├── views/<br>
 │   ├── index.ejs<br>
 │   ├── about.ejs<br>
 │   ├── register.ejs<br>
-│   ├── registered.ejs       # Registration output (assignment requirement)<br>
+│   ├── registered.ejs<br>
 │   ├── login.ejs<br>
 │   ├── loggedin.ejs<br>
 │   ├── list.ejs             # All books<br>
-│   ├── listuser.ejs         # List of registered users (no passwords)<br>
-│   ├── audit.ejs            # New — audit log table<br>
+│   ├── listuser.ejs         # List of registered users<br>
+│   ├── audit.ejs            # Full audit log table<br>
 │   ├── search.ejs<br>
 │   ├── search-result.ejs<br>
 │   ├── addbook.ejs<br>
 │   └── bookadded.ejs<br>
-├── public/<br>
-│   └── main.css             # Global stylesheet<br>
-├── create_db.sql            # Database + tables + user creation<br>
-├── insert_test_data.sql     # Sample book data<br>
+├── create_db.sql            # DB + tables + user + privileges<br>
+├── insert_test_data.sql    # Sample books + dummy users<br>
 ├── package.json<br>
 └── README.md<br>
 
 ---
-## Main Routes - Page updated: 18 November 2025
+## Main Routes - Page updated: 26 November 2025
 
 | Route                        | Description                              |
 |------------------------------|------------------------------------------|
@@ -116,6 +158,60 @@ DB_PASSWORD=qwertyuiop
 DB_NAME=berties_books
 
 ---
+
+### Security Features
+
+| Threat                  | Protection Used                                                |
+|-------------------------|----------------------------------------------------------------|
+| **SQL Injection**       | Parameterized queries + `express-sanitizer`                    |
+| **XSS**                 | `express-sanitizer` strips dangerous HTML/script tags          |
+| **Weak Passwords**      | `bcrypt` hashing (10 salt rounds) + minimum length validation  |
+| **Session Hijacking**   | Secure random session secret + 10-minute cookie expiry         |
+| **Unauthorized Access** | `redirectLogin` middleware protects all admin-style routes     |
+| **Credential Exposure** | Database credentials stored in `.env` (never committed to Git) |
+
+### Audit Logging System (New in 2025!)
+
+Every authentication-related event is permanently recorded in the `audit_logs` table:
+
+| Event                     | Logged Detail                                   | Success |
+|---------------------------|--------------------------------------------------|---------|
+| Registration success      | "Successful registration"                        | 1       |
+| Registration duplicate    | "Registration failed (duplicate or db error)"    | 0       |
+| Login success             | "Successful login"                               | 1       |
+| Login failed (user)       | "User not found"                                 | 0       |
+| Login failed (password)   | "Incorrect password"                             | 0       |
+| Logout                    | "User logged out"                                | 1       |
+
+**View the full audit trail at:** `/users/audit` **(protected route – login required)**
+
+### All Routes (Complete List – November 2025)
+
+| Route                     | Method   | Auth Required? | Description                              |
+|---------------------------|----------|----------------|------------------------------------------|
+| `/`                       | GET      | No             | Home page                                |
+| `/about`                  | GET      | No             | About Bertie's Books                     |
+| `/users/register`         | GET      | No             | Registration form                        |
+| `/users/registered`       | POST     | No             | Registration success page                |
+| `/users/login`            | GET/POST | No             | Login form & processing                  |
+| `/users/logout`           | GET      | Yes            | Destroy session and log out              |
+| `/users/list`             | GET      | Yes            | List all registered users                |
+| `/users/audit`            | GET      | Yes            | Full audit log history (protected)       |
+| `/books/list`             | GET      | No             | Display all books                        |
+| `/books/bargainbooks`     | GET      | No             | Books priced under £20                   |
+| `/books/search`           | GET      | No             | Search form                              |
+| `/books/search-result`    | GET      | No             | Search results (partial keyword match)   |
+| `/books/addbook`          | GET      | Yes            | Add new book form (protected)            |
+| `/books/add`              | POST     | Yes            | Submit new book to database              |
+
+### Test Users
+
+| Username | Password   | Notes                                   |
+|----------|------------|-----------------------------------------|
+| `admin`  | *(any)*    | Dummy hash – great for brute-force demo |
+| `gold`   | `gold123`  | Fully working account from test data    |
+
+*Feel free to register as many new users as you like!*-
 
 ## Author
 Educational project created by Llewelyn Fernandes
