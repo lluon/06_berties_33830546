@@ -32,7 +32,7 @@ const redirectLogin = (req, res, next) => {
 
   // GET register form
   router.get('/register', (req, res) => {
-    res.render('register', { errors: [] });
+    res.render('register', { errors: [], BASE_PATH: process.env.BASE_PATH });
   });
 
   // POST register
@@ -47,7 +47,7 @@ const redirectLogin = (req, res, next) => {
     (req, res, next) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return res.render('register', { errors: errors.array() });
+        return res.render('register', { errors: errors.array(), BASE_PATH: process.env.BASE_PATH });
       }
 
       // sanitize inputs (express-sanitizer)
@@ -71,14 +71,15 @@ const redirectLogin = (req, res, next) => {
           }
 
           logAudit(username, true, 'Successful registration');
-          res.render('registered', { first, last, email });
+          res.render('registered', { first, last, email, BASE_PATH: process.env.BASE_PATH });
+
         });
       });
     });
 
   // GET login form
   router.get('/login', (req, res) => {
-    res.render('login', { error: null });
+    res.render('login', { error: null, BASE_PATH: process.env.BASE_PATH });
   });
 
   // POST login
@@ -102,7 +103,7 @@ const redirectLogin = (req, res, next) => {
 
         if (!results.length) {
           logAudit(username, false, 'User not found');
-          return res.render('login', { error: 'User not found' });
+          return res.render('login', { error: 'User not found', BASE_PATH: process.env.BASE_PATH });
         }
 
         const user = results[0];
@@ -111,22 +112,22 @@ const redirectLogin = (req, res, next) => {
           if (err) return next(err);
           if (!match) {
             logAudit(username, false, 'Incorrect password');
-            return res.render('login', { error: 'Incorrect password' });
+            return res.render('login', { error: 'Incorrect password', BASE_PATH: process.env.BASE_PATH });
           }
 
           // Save session
           req.session.userId = user.id;
           req.session.username = user.name;
 
-          // Only "gold" with password "smiths" is admin
-          if (username === "gold" && password === "smiths") {
+          // Only "Gold" with password "smiths" is admin
+          if (username === "Gold" && password === "smiths") {
             req.session.isAdmin = true;
           } else {
             req.session.isAdmin = false;
           }
 
           logAudit(username, true, 'Successful login');
-          res.render('loggedin', { first_name: user.first_name, last_name: user.last_name, email: user.email });
+          res.render('loggedin', { first_name: user.first_name, last_name: user.last_name, email: user.email, BASE_PATH: process.env.BASE_PATH });
         });
       });
     });
@@ -140,7 +141,7 @@ const redirectLogin = (req, res, next) => {
         return res.redirect(process.env.BASE_PATH + '/');
       }
       logAudit(un, true, 'User logged out');
-      res.send('You are now logged out. <a href="/">Home</a>');
+      res.send(`You are now logged out. <a href="${process.env.BASE_PATH}/">Home</a>`);
     });
   });
 
@@ -149,7 +150,7 @@ const redirectLogin = (req, res, next) => {
     const sql = `SELECT name, first_name, last_name, email FROM users`;
     db.query(sql, (err, rows) => {
       if (err) return next(err);
-      res.render('listusers', { users: rows });
+      res.render('listusers', { users: rows, BASE_PATH: process.env.BASE_PATH });
     });
   });
 
@@ -158,7 +159,7 @@ const redirectLogin = (req, res, next) => {
     const sql = `SELECT username, success, detail, created_at FROM audit_logs ORDER BY created_at DESC`;
     db.query(sql, (err, rows) => {
       if (err) return next(err);
-      res.render('audit', { logs: rows });
+      res.render('audit', { logs: rows, BASE_PATH: process.env.BASE_PATH });
     });
   });
 

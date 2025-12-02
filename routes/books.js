@@ -16,7 +16,7 @@ module.exports = (db) => {
   router.get('/list', (req, res, next) => {
     db.query('SELECT id, name, price FROM books', (err, rows) => {
       if (err) return next(err);
-      res.render('list', { availableBooks: rows, shopData: req.app.locals.shopData });
+      res.render('list', { availableBooks: rows, shopData: req.app.locals.shopData, BASE_PATH: process.env.BASE_PATH });
     });
   });
 
