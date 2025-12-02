@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>Add a Book — <%= shopData.shopName %></title>
-  <link rel="stylesheet" href="/main.css">
+  <link rel="stylesheet" href="<%= process.env.BASE_PATH %>/main.css">
 </head>
 <body>
   <h1>Add a Book to <%= shopData.shopName %></h1>
@@ -24,6 +24,6 @@
     <button type="submit">Add Book</button>
   </form>
 
-  <p><a href="/">Back to home</a></p>
+  <p><a href="<%= process.env.BASE_PATH %>/">Back to home</a></p>
 </body>
 </html>

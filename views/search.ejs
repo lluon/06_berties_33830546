@@ -3,17 +3,17 @@
 <head>
   <meta charset="utf-8">
   <title>Search — <%= shopData.shopName %></title>
-  <link rel="stylesheet" href="/main.css">
+  <link rel="stylesheet" href="<%= process.env.BASE_PATH %>/main.css">
 </head>
 <body>
   <h1>Search <%= shopData.shopName %></h1>
 
-  <form method="GET" action="/books/search-result">
+  <form method="GET" action="<%= process.env.BASE_PATH %>/books/search-result">
     <label>What book are you looking for?</label>
     <input type="text" name="keyword" required>
     <button type="submit">Search</button>
   </form>
 
-  <p><a href="/">Back to home</a></p>
+  <p><a href="<%= process.env.BASE_PATH %>/">Back to home</a></p>
 </body>
 </html>

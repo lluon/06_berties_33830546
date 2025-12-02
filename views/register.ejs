@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>Register — <%= shopData.shopName %></title>
-  <link rel="stylesheet" href="/main.css">
+  <link rel="stylesheet" href="<%= process.env.BASE_PATH %>/main.css">
 </head>
 <body>
   <h1>Register</h1>
@@ -16,7 +16,7 @@
     </ul>
   <% } %>
 
-  <form action="/users/registered" method="POST">
+  <form action="<%= process.env.BASE_PATH %>/users/registered" method="POST">
     <label>First name:
       <input type="text" name="first_name" required>
     </label>
@@ -40,6 +40,6 @@
     <button type="submit">Register</button>
   </form>
 
-  <p><a href="/">Back to home</a></p>
+  <p><a href="<%= process.env.BASE_PATH %>/">Back to home</a></p>
 </body>
 </html>

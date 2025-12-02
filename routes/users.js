@@ -7,8 +7,19 @@ const saltRounds = 10;
 
 module.exports = (db) => {
 
-  const redirectLogin = (req, res, next) => {
-    if (!req.session.userId) return res.redirect('/users/login');
+
+  // middleware to log in
+const redirectLogin = (req, res, next) => {
+  if (!req.session.userId) return res.redirect(process.env.BASE_PATH +'/users/login');
+  next();
+};
+
+
+  // middleware to log in as "Gold" "smiths"
+  const requireAdmin = (req, res, next) => {
+    if (!req.session.isAdmin) {
+      return res.redirect(process.env.BASE_PATH + '/');
+    }
     next();
   };
 
@@ -27,11 +38,11 @@ module.exports = (db) => {
   // POST register
   router.post('/registered',
     [
-      check('email').isEmail().withMessage('Email must be valid'),
-      check('username').isLength({ min: 3, max: 20 }).withMessage('Username must be between 5 and 20 characters'),
-      check('password').isLength({ min: 6 }).withMessage('Password must be at least 8 characters'),
-      check('first_name').notEmpty().withMessage('First name required'),
-      check('last_name').notEmpty().withMessage('Last name required')
+      check('email').normalizeEmail().isEmail().withMessage('Email must be valid'),
+      check('username').trim().isLength({ min: 4, max: 20 }).withMessage('Username must be between 4 and 20 characters'),
+      check('password').trim().isLength({ min: 6 }).matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$$ !%*?&])[A-Za-z\d@ $$!%*?&]{8,}$/).withMessage('Password must be at least 8 characters with uppercase, lowercase, number, and special character'),
+      check('first_name').trim().notEmpty().withMessage('First name required'),
+      check('last_name').trim().notEmpty().withMessage('Last name required')
     ],
     (req, res, next) => {
       const errors = validationResult(req);
@@ -73,8 +84,8 @@ module.exports = (db) => {
   // POST login
   router.post('/login',
     [
-      check('username').notEmpty().withMessage('Username required'),
-      check('password').notEmpty().withMessage('Password required')
+    check('username').trim().notEmpty().isLength({ min: 4, max: 20 }).withMessage('Username required (5-20 characters)'),
+    check('password').trim().notEmpty().withMessage('Password required'),
     ],
     (req, res, next) => {
       const errors = validationResult(req);
@@ -106,6 +117,14 @@ module.exports = (db) => {
           // Save session
           req.session.userId = user.id;
           req.session.username = user.name;
+
+          // Only "gold" with password "smiths" is admin
+          if (username === "gold" && password === "smiths") {
+            req.session.isAdmin = true;
+          } else {
+            req.session.isAdmin = false;
+          }
+
           logAudit(username, true, 'Successful login');
           res.render('loggedin', { first_name: user.first_name, last_name: user.last_name, email: user.email });
         });
@@ -118,7 +137,7 @@ module.exports = (db) => {
     req.session.destroy(err => {
       if (err) {
         console.error('Session destroy error:', err);
-        return res.redirect('/');
+        return res.redirect(process.env.BASE_PATH + '/');
       }
       logAudit(un, true, 'User logged out');
       res.send('You are now logged out. <a href="/">Home</a>');
@@ -135,7 +154,7 @@ module.exports = (db) => {
   });
 
   // Audit logs (protected)
-  router.get('/audit', redirectLogin, (req, res, next) => {
+  router.get('/audit', redirectLogin, requireAdmin, (req, res, next) => {
     const sql = `SELECT username, success, detail, created_at FROM audit_logs ORDER BY created_at DESC`;
     db.query(sql, (err, rows) => {
       if (err) return next(err);

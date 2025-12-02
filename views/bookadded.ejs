@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>Book Added — <%= shopData.shopName %></title>
-  <link rel="stylesheet" href="/main.css">
+  <link rel="stylesheet" href="<%= process.env.BASE_PATH %>/main.css">
 </head>
 <body>
   <h1>Book Successfully Added to <%= shopData.shopName %></h1>
@@ -12,7 +12,7 @@
   <p><strong>Name:</strong> <%= name %></p>
   <p><strong>Price:</strong> £<%= Number(price).toFixed(2) %></p>
 
-  <p><a href="/books/list">Back to Book List</a></p>
-  <p><a href="/">Back to home</a></p>
+  <p><a href="<%= process.env.BASE_PATH %>/books/list">Back to Book List</a></p>
+  <p><a href="<%= process.env.BASE_PATH %>/">Back to home</a></p>
 </body>
 </html>

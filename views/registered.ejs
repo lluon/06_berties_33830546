@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <title>Registered — <%= shopData.shopName %></title>
-  <link rel="stylesheet" href="/main.css">
+  <link rel="stylesheet" href="<%= process.env.BASE_PATH %>/main.css">
 </head>
 <body>
   <h1>Registration Complete</h1>
   <p>Hello <%= first %> <%= last %>, you are now registered.</p>
   <p>We will send an email to: <strong><%= email %></strong></p>
-  <p><a href="/">Back to home</a></p>
+  <p><a href="<%= process.env.BASE_PATH %>/">Back to home</a></p>
 </body>
 </html>
