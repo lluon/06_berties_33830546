@@ -66,7 +66,9 @@ router.post('/add', redirectLogin, [
   const name = req.sanitize(req.body.name); // Sanitize after validation
   const price = parseFloat(req.body.price);
 
-  db.query('INSERT INTO books (name, price) VALUES (?, ?)', [name, price], (err) => {
+  db.query('INSERT INTO books (name, price) VALUES (?, ?) ON DUPLICATE KEY UPDATE id = id', 
+    [name, price], 
+    (err) => {
     if (err) return next(err);
     res.render('bookadded', { name, price, shopData: req.app.locals.shopData });
   });
