@@ -72,7 +72,6 @@ const redirectLogin = (req, res, next) => {
 
           logAudit(username, true, 'Successful registration');
           res.render('registered', { first, last, email, BASE_PATH: process.env.BASE_PATH });
-
         });
       });
     });
@@ -91,7 +90,7 @@ const redirectLogin = (req, res, next) => {
     (req, res, next) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return res.render('login', { error: errors.array()[0].msg });
+        return res.render('login', { error: errors.array()[0].msg, BASE_PATH:process.env.BASE_PATH });
       }
 
       const username = req.sanitize(req.body.username);
@@ -127,23 +126,30 @@ const redirectLogin = (req, res, next) => {
           }
 
           logAudit(username, true, 'Successful login');
-          res.render('loggedin', { first_name: user.first_name, last_name: user.last_name, email: user.email, BASE_PATH: process.env.BASE_PATH });
+          res.render('loggedin', { 
+            first_name: user.first_name, 
+            last_name: user.last_name, 
+            email: user.email,
+            isAdmin: req.session.isAdmin || false, 
+            BASE_PATH: process.env.BASE_PATH 
+          });
         });
       });
     });
 
   // logout
-  router.get('/logout', redirectLogin, (req, res) => {
-    const un = req.session.username;
-    req.session.destroy(err => {
-      if (err) {
-        console.error('Session destroy error:', err);
-        return res.redirect(process.env.BASE_PATH + '/');
-      }
-      logAudit(un, true, 'User logged out');
-      res.send(`You are now logged out. <a href="${process.env.BASE_PATH}/">Home</a>`);
-    });
+router.get('/logout', redirectLogin, (req, res) => {
+  const username = req.session.username || 'unknown';
+
+  req.session.destroy(err => {
+    if (err) {
+      console.error('Session destroy error:', err);
+      return res.redirect(process.env.BASE_PATH + '/');
+    }
+    logAudit(username, true, 'User logged out');
+    res.redirect(process.env.BASE_PATH + '/');
   });
+});
 
   // List users (protected)
   router.get('/list', redirectLogin, (req, res, next) => {
