@@ -13,13 +13,12 @@ html, body {
 }
 
 body {
-  padding: 20vh 30vw; 
+  padding: 20vh 30vw;
 }
-
 
 body > * {
   max-width: 40vw;
-  margin: 0 auto;  
+  margin: 0 auto;
 }
 
 /* Headings */
@@ -71,7 +70,6 @@ button {
 }
 
 /* Tables */
-
 li,tr,
   td {
     padding: 8px;
@@ -108,3 +106,45 @@ button {
   transition: background-color 0.2s ease;
 }
 
+/* Weather page */
+.weather-box {
+  background: linear-gradient(135deg, #74b9ff, #0984e3);
+  color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.weather-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.temp {
+  font-size: 3.5rem;
+  font-weight: bold;
+  margin: 0.5rem 0;
+}
+
+.description {
+  font-size: 1.4rem;
+  text-transform: capitalize;
+  margin: 0.5rem 0;
+}
+
+.details {
+  margin-top: 1rem;
+  font-size: 1.1rem;
+}
+
+.error {
+  color: #ff7675;
+  background: #fd79a8;
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+}
+
+form input[type="text"] { width: 100% !important; }
+form input[type="search"] { width: 100% !important; }

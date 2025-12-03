@@ -7,15 +7,18 @@ const expressSanitizer = require('express-sanitizer');
 
 const db = require('./db');
 
-const mainRoutes = require('./routes/main');
-const usersRoutes = require('./routes/users')(db);
-const booksRoutes = require('./routes/books')(db);
+// Routes
+const mainRoutes    = require('./routes/main');
+const usersRoutes   = require('./routes/users')(db);
+const booksRoutes   = require('./routes/books')(db);
+const weatherRoutes = require('./routes/weather')();
+const apiRoutes     = require('./routes/api')(db);
 
 const app = express();
 const port = process.env.PORT || 8000;
-const BASE_PATH = process.env.BASE_PATH || "";
-process.env.BASE_PATH = BASE_PATH; // everywere status of basepath
 
+const BASE_PATH = process.env.BASE_PATH || "";
+process.env.BASE_PATH = BASE_PATH;
 
 // View engine
 app.set('view engine', 'ejs');
@@ -35,24 +38,26 @@ app.use(session({
 
 // Global template data
 app.locals.shopData = { shopName: "Bertie's Books" };
-app.locals.BASE_PATH = BASE_PATH; // pass BASE_PATH to all templates
+app.locals.BASE_PATH = BASE_PATH;
 
+// API routes
+app.use('/api', apiRoutes);
 
-// Routes
 app.use(BASE_PATH + '/', mainRoutes);
-app.use(BASE_PATH +'/users', usersRoutes);
-app.use(BASE_PATH +'/books', booksRoutes);
+app.use(BASE_PATH + '/users', usersRoutes);
+app.use(BASE_PATH + '/books', booksRoutes);
+app.use(BASE_PATH + '/weather', weatherRoutes);
 
-// 404 catch-all
-app.use((req, res, next) => {
+// 404 handler 
+app.use((req, res) => {
   res.status(404).send(`
     <h1>404 Not Found</h1>
     <p>The requested URL ${req.originalUrl} was not found on this server.</p>
-    <p><a href="${process.env.BASE_PATH}/">Back to home</a></p>
+    <p><a href="${BASE_PATH}/">Back to home</a></p>
   `);
 });
 
-// Error handler (optional)
+// Error handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send(`
@@ -65,4 +70,5 @@ app.use((err, req, res, next) => {
 // Start server
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}${BASE_PATH}/`);
+  console.log(`API available at     http://localhost:${port}/api/books`);
 });
