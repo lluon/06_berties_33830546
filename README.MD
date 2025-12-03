@@ -215,7 +215,7 @@ Or register your own!
 
 Every authentication-related event is permanently recorded in the `audit_logs` table:
 
-| Event                     | Logged Detail                                   | Success |
+| Event                     | Logged Detail                                    | Success |
 |---------------------------|--------------------------------------------------|---------|
 | Registration success      | "Successful registration"                        | 1       |
 | Registration duplicate    | "Registration failed (duplicate or db error)"    | 0       |
