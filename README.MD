@@ -87,7 +87,7 @@ It demonstrates **real-world best practices** including:
 ## Project Structure
 
 berties_books/<br>
-├── .env                     # Contains DB credentials (ignored in Git)<br>
+├── .env                     # DB + WEATHER_API_KEY (ignored in Git)<br>
 ├── index.js                 # main server entry point<br>
 ├── db.js                    # Database connection (dotenv-enabled)<br>
 ├── package.json<br>
@@ -97,8 +97,11 @@ berties_books/<br>
 ├── routes/<br>
 │   ├── main.js              # Home, About <br>
 │   ├── users.js             # Auth + audit + user list<br>
+│   ├── weather.js           # OpenWeatherMap integration <br>
+│   ├── api.js               # Public JSON API<br>
 │   └── books.js             # Catalogue, search, add book<br>
 ├── views/<br>
+│   ├── weather.ejs          # Weather page<br>
 │   ├── index.ejs<br>
 │   ├── about.ejs<br>
 │   ├── register.ejs<br>
@@ -116,25 +119,60 @@ berties_books/<br>
 ├── insert_test_data.sql    # Sample books + dummy users<br>
 ├── package.json<br>
 └── README.md<br>
+---
+
+## Weather Forecast Integration
+
+- Route: `/weather`
+- Uses **OpenWeatherMap Current Weather API**
+- Interactive city search
+- Displays: temperature, description, humidity, wind speed
+- Beautiful blue-to-cyan gradient design
+
 
 ---
-## Main Routes - Page updated: 26 November 2025
 
-| Route                        | Description                              |
-|------------------------------|------------------------------------------|
-| `/`                          | Home page                                |
-| `/about`                     | About the shop                           |
-| `/users/register`            | User registration form                   |
-| `/users/login                | Login form                               |
-| `/users/audit`               | Audit log history                        |
-| `/users/list`                | List registered users                    |
-| `/book/list`                 | All books                                |
-| `/books/bargainbooks`        | Books priced under £20 (bargain offers)  |
-| `/books/search`              | Search form                              |
-| `/books/search-result` (GET) | Search results (partial keyword match)   |
-| `/books/addbook`             | Form to add a new book                   |
-| `/books/bookadded` (POST)    | Confirmation after adding a book         |
+## Books API 
 
+**Public JSON API** available at:
+
+**Base URL:** `http://localhost:8000/api/books`
+---
+## Main Routes 
+
+| Query Parameter   | Example                              | Description                          |
+|-------------------|--------------------------------------|--------------------------------------|
+| `search`          | `?search=java`                       | Search book title (partial match)    |
+| `minprice`        | `?minprice=10`                       | Minimum price                        |
+| `maxprice`        | `?maxprice=25`                       | Maximum price                        |
+| `sort`            | `?sort=price` or `?sort=name`        | Sort results                         |
+
+**Examples:**
+- All books: `/api/books`
+- Books with "java": `/api/books?search=java`
+- £10–£25: `/api/books?minprice=10&maxprice=25`
+- Sorted by price: `/api/books?sort=price`
+
+**No authentication required** – fully public for marking
+
+| Route                     | Method   | Auth? | Description                              |
+|---------------------------|----------|-------|------------------------------------------|
+| `/`                       | GET      | No    | Home page                                |
+| `/about`                  | GET      | No    | About page                               |
+| `/weather`                | GET      | No    | **Live weather forecast**                |
+| `/api/books`              | GET      | No    | **Public JSON API** (search/sort/price)  |
+| `/users/register`         | GET      | No    | Registration form                        |
+| `/users/registered`       | POST     | No    | Registration success                     |
+| `/users/login`            | GET/POST | No    | Login form & processing                  |
+| `/users/logout`           | GET      | Yes   | Logout                                   |
+| `/users/list`             | GET      | Yes   | List all users (protected)               |
+| `/users/audit`            | GET      | Yes   | Audit log (protected)                    |
+| `/books/list`             | GET      | No    | All books                                |
+| `/books/bargainbooks`     | GET      | No    | Books under £20                          |
+| `/books/search`           | GET      | No    | Search form                              |
+| `/books/search-result`    | GET      | No    | Search results                           |
+| `/books/addbook`          | GET      | Yes   | Add book form (protected)                |
+| `/books/add`              | POST     | Yes   | Submit new book                          |
 ---
 
 ## Setup & Installation
@@ -158,7 +196,18 @@ DB_PASSWORD=qwertyuiop
 DB_NAME=berties_books
 
 ---
+---
 
+## Test Users
+
+| Username | Password    | Role                                     |
+|----------|-------------|------------------------------------------|
+| `Gold`   | `smiths`    | **Admin** (can access audit & user list) |
+| `admin`  | *(any)*     | Dummy account for testing                |
+
+Or register your own!
+
+---
 ### Security Features
 
 | Threat                  | Protection Used                                                |
@@ -185,33 +234,6 @@ Every authentication-related event is permanently recorded in the `audit_logs` t
 
 **View the full audit trail at:** `/users/audit` **(protected route – login required)**
 
-### All Routes (Complete List – November 2025)
-
-| Route                     | Method   | Auth Required? | Description                              |
-|---------------------------|----------|----------------|------------------------------------------|
-| `/`                       | GET      | No             | Home page                                |
-| `/about`                  | GET      | No             | About Bertie's Books                     |
-| `/users/register`         | GET      | No             | Registration form                        |
-| `/users/registered`       | POST     | No             | Registration success page                |
-| `/users/login`            | GET/POST | No             | Login form & processing                  |
-| `/users/logout`           | GET      | Yes            | Destroy session and log out              |
-| `/users/list`             | GET      | Yes            | List all registered users                |
-| `/users/audit`            | GET      | Yes            | Full audit log history (protected)       |
-| `/books/list`             | GET      | No             | Display all books                        |
-| `/books/bargainbooks`     | GET      | No             | Books priced under £20                   |
-| `/books/search`           | GET      | No             | Search form                              |
-| `/books/search-result`    | GET      | No             | Search results (partial keyword match)   |
-| `/books/addbook`          | GET      | Yes            | Add new book form (protected)            |
-| `/books/add`              | POST     | Yes            | Submit new book to database              |
-
-### Test Users
-
-| Username | Password   | Notes                                   |
-|----------|------------|-----------------------------------------|
-| `admin`  | *(any)*    | Dummy hash – great for brute-force demo |
-| `gold`   | `gold123`  | Fully working account from test data    |
-
-*Feel free to register as many new users as you like!*-
 
 ## Author
 Educational project created by Llewelyn Fernandes
