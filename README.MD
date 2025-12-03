@@ -2,14 +2,6 @@
 ### The Ultimate Full-Stack Bookstore Web Application  
 **Node.js • Express • EJS • MySQL • bcrypt • Session Auth • Audit Logging • Responsive Design**
 
-<img src="https://img.shields.io/badge/Node.js-v20.18.0-success?style=for-the-badge&logo=node.js" alt="Node.js">
-<img src="https://img.shields.io/badge/Express-4.21-blue?style=for-the-badge&logo=express" alt="Express">
-<img src="https://img.shields.io/badge/MySQL-8.0%2B-orange?style=for-the-badge&logo=mysql" alt="MySQL">
-<img src="https://img.shields.io/badge/EJS-Templating-yellow?style=for-the-badge" alt="EJS">
-<img src="https://img.shields.io/badge/bcrypt-Password%20Hashing-purple?style=for-the-badge" alt="bcrypt">
-<img src="https://img.shields.io/badge/License-MIT-brightgreen?style=for-the-badge" alt="License">
-
-> **Live Demo (Goldsmiths Students)** → https://doc.gold.ac.uk/usr/388/  
 > **Last Updated**: 26 November 2025
 
 ---
