@@ -43,6 +43,7 @@ app.locals.BASE_PATH = BASE_PATH;
 // API routes
 app.use('/api', apiRoutes);
 
+app.use('/',mainRoutes);
 app.use(BASE_PATH + '/', mainRoutes);
 app.use(BASE_PATH + '/users', usersRoutes);
 app.use(BASE_PATH + '/books', booksRoutes);
