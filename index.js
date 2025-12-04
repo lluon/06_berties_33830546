@@ -43,10 +43,10 @@ app.locals.BASE_PATH = BASE_PATH;
 // API routes
 app.use('/api', apiRoutes);
 
-app.use(BASE_PATH + '/', mainRoutes);
-app.use(BASE_PATH + '/users', usersRoutes);
-app.use(BASE_PATH + '/books', booksRoutes);
-app.use(BASE_PATH + '/weather', weatherRoutes);
+app.use('/', mainRoutes);
+app.use('/users', usersRoutes);
+app.use('/books', booksRoutes);
+app.use('/weather', weatherRoutes);
 
 
 // 404 handler 
