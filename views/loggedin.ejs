@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
   <title>Logged in — <%= shopData.shopName %></title>
-  <link rel="stylesheet" href="<%= process.env.BASE_PATH %>/main.css">
+  <base href="<%= process.env.BASE_PATH %>/">
+  <link rel="stylesheet" href="main.css">
 </head>
 <body>
   <h1>Welcome, <%= first_name %> <%= last_name %>!</h1>
@@ -11,13 +12,13 @@
 
 <!-- conditional admin -->
  <% if ( isAdmin === true) { %>
-    <p><a href="<%= process.env.BASE_PATH %>/users/list">List users (protected)</a></p>
-    <p><a href="<%= process.env.BASE_PATH %>/users/audit">Audit log (protected)</a></p>
+    <p><a href="users/list">List users (protected)</a></p>
+    <p><a href="users/audit">Audit log (protected)</a></p>
   <% } %>
 
 
   <!--conditional all user  -->
-  <p><a href="<%= process.env.BASE_PATH %>/users/logout">Logout</a></p>
-  <p><a href="<%= process.env.BASE_PATH %>/">Back to home</a></p>
+  <p><a href="users/logout">Logout</a></p>
+  <p><a href=".">Back to home</a></p>
 </body>
 </html>

@@ -3,13 +3,14 @@
 <head>
   <meta charset="utf-8">
   <title>Weather Forecast — <%= shopData.shopName %></title>
-  <link rel="stylesheet" href="<%= BASE_PATH %>/main.css">
+  <base href="<%= process.env.BASE_PATH %>/">
+  <link rel="stylesheet" href="main.css">
   
 </head>
 <body>
   <h1>Weather Forecast</h1>
 
-  <form method="GET">
+  <form method="GET" action="weather">
     <label>
       Enter city name:
       <input type="text" name="city" value="<%= city %>" placeholder="e.g. Manchester" required>
@@ -37,6 +38,6 @@
     </div>
   <% } %>
 
-  <p><a href="<%= BASE_PATH %>/">Back to Home</a></p>
+  <p><a href=".">Back to Home</a></p>
 </body>
 </html>
