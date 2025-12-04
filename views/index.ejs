@@ -8,14 +8,14 @@
 <body>
   <h1>Welcome to <%= shopData.shopName %></h1>
 
-  <p><a href="about">About us</a></p>
-  <p><a href="books/search">Search for books</a></p>
-  <p><a href="books/list">List all books</a></p>
-  <p><a href="books/addbook">Add a new book (requires login)</a></p>
-  <p><a href="books/bargainbooks">Bargain offers (under £20)</a></p>
-  <p><a href="users/register">Register</a></p>
-  <p><a href="users/login">Login</a></p>
-  <p><a href="weather">weather</a></p>
+  <p><a href="<%= process.env.BASE_PATH %>/about">About us</a></p>
+  <p><a href="<%= process.env.BASE_PATH %>/books/search">Search for books</a></p>
+  <p><a href="<%= process.env.BASE_PATH %>/books/list">List all books</a></p>
+  <p><a href="<%= process.env.BASE_PATH %>/books/addbook">Add a new book (requires login)</a></p>
+  <p><a href="<%= process.env.BASE_PATH %>/books/bargainbooks">Bargain offers (under £20)</a></p>
+  <p><a href="<%= process.env.BASE_PATH %>/users/register">Register</a></p>
+  <p><a href="<%= process.env.BASE_PATH %>/users/login">Login</a></p>
+  <p><a href="<%= process.env.BASE_PATH %>/weather">weather</a></p>
 
 </body>
 </html>

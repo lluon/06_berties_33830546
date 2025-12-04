@@ -13,7 +13,7 @@
     <p style="color:red;"><%= error %></p>
   <% } %>
 
-  <form action="users/login" method="POST">
+  <form action="<%= process.env.BASE_PATH %>/users/login" method="POST">
     <label>Username:
       <input type="text" name="username" required>
     </label>
@@ -25,6 +25,6 @@
     <button type="submit">Log in</button>
   </form>
 
-  <p><a href=".">Back to home</a></p>
+  <p><a href="<%= process.env.BASE_PATH %>/">Back to home</a></p>
 </body>
 </html>
