@@ -10,7 +10,9 @@ module.exports = (db) => {
 
   // middleware to log in
 const redirectLogin = (req, res, next) => {
-  if (!req.session.userId) return res.redirect(process.env.BASE_PATH +'/users/login');
+  if (!req.session.userId) {
+  return res.redirect('/users/login');
+  }
   next();
 };
 
@@ -18,7 +20,7 @@ const redirectLogin = (req, res, next) => {
   // middleware to log in as "Gold" "smiths"
   const requireAdmin = (req, res, next) => {
     if (!req.session.isAdmin) {
-      return res.redirect(process.env.BASE_PATH + '/');
+      return res.redirect('/');
     }
     next();
   };
@@ -144,10 +146,10 @@ router.get('/logout', redirectLogin, (req, res) => {
   req.session.destroy(err => {
     if (err) {
       console.error('Session destroy error:', err);
-      return res.redirect(process.env.BASE_PATH + '/');
+      return res.redirect('/');
     }
     logAudit(username, true, 'User logged out');
-    res.redirect(process.env.BASE_PATH + '/');
+    res.redirect('/');
   });
 });
 
