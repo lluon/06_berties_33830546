@@ -26,7 +26,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(BASE_PATH,express.static(path.join(__dirname, 'public')));
 app.use(expressSanitizer());
 
 app.use(session({
