@@ -121,7 +121,7 @@ const redirectLogin = (req, res, next) => {
           req.session.username = user.name;
 
           // Only "Gold" with password "smiths" is admin
-          if (username === "Gold" && password === "smiths") {
+          if (username === "Gold" && password ==="smiths") {
             req.session.isAdmin = true;
           } else {
             req.session.isAdmin = false;
