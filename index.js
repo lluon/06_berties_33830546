@@ -17,6 +17,7 @@ const apiRoutes     = require('./routes/api')(db);
 const app = express();
 const port = process.env.PORT || 8000;
 
+// Set BASE_PATH globally and locally.
 const BASE_PATH = process.env.BASE_PATH || "";
 process.env.BASE_PATH = BASE_PATH;
 
@@ -26,7 +27,10 @@ app.set('views', path.join(__dirname, 'views'));
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
-app.use(BASE_PATH,express.static(path.join(__dirname, 'public')));
+
+// **CRITICAL FIX 1: Static Files (WITH BASE_PATH)**
+// Static files (CSS/JS) must use BASE_PATH because the proxy does NOT strip the path for them.
+app.use(BASE_PATH, express.static(path.join(__dirname, 'public')));
 app.use(expressSanitizer());
 
 app.use(session({
@@ -43,16 +47,17 @@ app.locals.BASE_PATH = BASE_PATH;
 // API routes
 app.use('/api', apiRoutes);
 
-app.use('/',mainRoutes);
-app.use(BASE_PATH + '/', mainRoutes);
-app.use(BASE_PATH + '/users', usersRoutes);
-app.use(BASE_PATH + '/books', booksRoutes);
-app.use(BASE_PATH + '/weather', weatherRoutes);
+// **CRITICAL FIX 2: Routing (NO BASE_PATH)**
+// All HTML/API routes must use root paths because the proxy STRIPS the BASE_PATH for them (including /users/login).
+app.use('/', mainRoutes);
+app.use('/users', usersRoutes);
+app.use('/books', booksRoutes);
+app.use('/weather', weatherRoutes);
 
 
 // 404 handler 
 app.use((req, res) => {
-  console.log('404 Debug - Original URL:', req.originalUrl);// check where is failing
+  console.log('404 Debug - Original URL:', req.originalUrl);
   res.status(404).send(`
     <h1>404 Not Found</h1>
     <p>The requested URL ${req.originalUrl} was not found on this server.</p>
@@ -73,5 +78,5 @@ app.use((err, req, res, next) => {
 // Start server
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}${BASE_PATH}/`);
-  console.log(`API available at     http://localhost:${port}/api/books`);
+  console.log(`API available at    http://localhost:${port}/api/books`);
 });
